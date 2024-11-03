@@ -16,6 +16,10 @@ This project implements a simple Wordle-like game where users can guess a hidden
 
 Try out the game live at this [Demo Link](https://toihid.github.io/wordle/).
 
+## Image
+
+![Game Screenshot](screenshort.png)
+
 ## Installation
 
 To run this project locally, follow these steps:

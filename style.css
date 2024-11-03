@@ -53,9 +53,11 @@
 }
 .correct-letter {
   background-color: orange !important;
+  color: #fff;
 }
 .correct-position {
   background-color: green !important;
+  color: #fff;
 }
 .current-row.cell {
   background-color: beige;
