@@ -1,0 +1,62 @@
+#container {
+  margin: 30px 0;
+  text-align: center;
+}
+.grid {
+  display: grid;
+  width: fit-content;
+  margin: 0 auto;
+}
+
+.cell {
+  background-color: #fbfcff;
+  border: 1px solid #dee1e9;
+  margin: 5px;
+  width: 56px;
+  height: 56px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+#keyboard {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+#keyboard button {
+  width: 56px;
+  height: 56px;
+  margin: 5px;
+  font-weight: bold;
+}
+
+.outline {
+  outline: 1px solid black;
+}
+.message-box {
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 50%; /* Center horizontally */
+  top: 25%; /* Center vertically */
+  transform: translate(-50%, -50%); /* Offset to truly center */
+  padding: 20px;
+  background-color: #fefefe;
+  border: 1px solid #888;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  text-align: center; /* Center text */
+}
+.correct-letter {
+  background-color: orange !important;
+}
+.correct-position {
+  background-color: green !important;
+}
+.current-row.cell {
+  background-color: beige;
+}

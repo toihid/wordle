@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wordle by Toihid</title>
+    <script src="initGame.js" defer></script>
+    <script src="main.js" defer></script>
+    <link href="style.css" rel="stylesheet" />
+  </head>
+  <body>
+    <div id="container">
+      <h2>Lets play wordle!</h2>
+    </div>
+
+    <!-- On-Screen Keyboard -->
+    <div id="keyboard">
+      <div class="row">
+        <button data-value="Q">Q</button>
+        <button data-value="W">W</button>
+        <button data-value="E">E</button>
+        <button data-value="R">R</button>
+        <button data-value="T">T</button>
+        <button data-value="Y">Y</button>
+        <button data-value="U">U</button>
+        <button data-value="I">I</button>
+        <button data-value="O">O</button>
+        <button data-value="P">P</button>
+        <!-- <button data-value="Å">Å</button> -->
+      </div>
+      <div class="row">
+        <button data-value="A">A</button>
+        <button data-value="S">S</button>
+        <button data-value="D">D</button>
+        <button data-value="F">F</button>
+        <button data-value="G">G</button>
+        <button data-value="H">H</button>
+        <button data-value="J">J</button>
+        <button data-value="K">K</button>
+        <button data-value="L">L</button>
+        <!-- <button data-value="Ä">Ä</button> -->
+        <!-- <button data-value="Ö">Ö</button> -->
+      </div>
+      <div class="row">
+        <button data-value="Z">Z</button>
+        <button data-value="X">X</button>
+        <button data-value="C">C</button>
+        <button data-value="V">V</button>
+        <button data-value="B">B</button>
+        <button data-value="N">N</button>
+        <button data-value="M">M</button>
+      </div>
+      <div class="row">
+        <button id="delete-button" data-value="Backspace">Delete</button>
+        <button id="enter-button" data-value="Enter">Enter</button>
+      </div>
+    </div>
+  </body>
+</html>
