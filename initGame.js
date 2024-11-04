@@ -3,6 +3,23 @@ const gridCols = 5;
 
 const container = document.querySelector("#container");
 console.log(container);
+
+const controlBar = document.createElement("div");
+controlBar.classList.add("contorl-bar");
+
+const label = document.createElement("span");
+label.textContent = "Color blind mode ";
+
+controlBar.appendChild(label);
+
+const colorBlindBtn = document.createElement("button");
+colorBlindBtn.id = "btn-toggle-color-blind";
+colorBlindBtn.classList.add("off");
+colorBlindBtn.textContent = "OFF";
+
+controlBar.appendChild(colorBlindBtn);
+container.appendChild(controlBar);
+
 const grid = document.createElement("div");
 grid.classList.add("grid");
 grid.style.gridTemplateColumns = `repeat(${gridCols},1fr)`;

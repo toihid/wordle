@@ -1,0 +1,10 @@
+@media (max-width: 767px) {
+  .cell,
+  #keyboard button {
+    width: 35px;
+    height: 35px;
+  }
+  #keyboard .row {
+    text-align: center;
+  }
+}

@@ -2,7 +2,7 @@
 const userInputs = [];
 let currentIndex = 0;
 let currentRow = 1;
-let correctWord = "large";
+let correctWord = "";
 
 // read json form file
 async function readWords() {
@@ -18,13 +18,17 @@ async function readWords() {
   }
 }
 
+// assign a random word from the wordle.json file
 readWords().then((result) => {
   randomWord = result[Math.floor(Math.random() * result.length)];
   onCorrectWordLoaded(randomWord);
 });
+const onCorrectWordLoaded = (randomWord) => {
+  correctWord = randomWord;
+  console.log("correct-word:", correctWord);
+};
 
-const onCorrectWordLoaded = (randomWord) => (correctWord = randomWord);
-
+// geting user input from onscreen keyboard
 const onScreenKeyboard = document.querySelectorAll("#keyboard button");
 onScreenKeyboard.forEach((button) => {
   button.addEventListener("click", (e) => {
@@ -33,14 +37,18 @@ onScreenKeyboard.forEach((button) => {
   });
 });
 
+// getting user input from keybord
 document.addEventListener("keydown", (e) => {
+  if (e.key === "Tab") {
+    e.preventDefault(); // Prevent the default tabbing action
+  }
   val = e.key.toLowerCase();
   const isAlphabet = /^[a-zA-Z]$/.test(val);
   (isAlphabet || val == "backspace" || val == "enter") && actionSwitcher(val);
 });
 
+// swishBoard to managing Actions
 const actionSwitcher = (val) => {
-  console.log(val);
   val === "enter"
     ? enterAction(val)
     : val === "backspace"
@@ -48,6 +56,7 @@ const actionSwitcher = (val) => {
     : inputAction(val);
 };
 
+// wtire write a alphabet in the cell and updated the array of userInputs
 const writeLetter = (val) => {
   userInputs.push(val);
   const currentIndex = userInputs.length - 1;
@@ -59,6 +68,7 @@ const writeLetter = (val) => {
   }
 };
 
+// delete a alphabet from the cell and updated the array of userInputs
 const deleteLetter = () => {
   userInputs.pop();
   const currentIndex = userInputs.length;
@@ -70,10 +80,10 @@ const deleteLetter = () => {
   }
 };
 
+// take actions for new input
 const inputAction = (val) => {
   const rowNum = Math.ceil(userInputs.length / gridCols);
   if (userInputs.length >= gridCols && userInputs.length % gridCols === 0) {
-    // if enter to new row then write the letter
     if (rowNum < currentRow) {
       writeLetter(val);
     } else {
@@ -92,6 +102,7 @@ const deleteAction = (val) => {
   }
 };
 
+// manage actions when clicking enter button
 const enterAction = () => {
   let checkAnyIputINNewRow = currentRow * gridCols - gridCols;
   if (
@@ -111,6 +122,7 @@ const enterAction = () => {
   }
 };
 
+// display a message
 const displayMessage = (message) => {
   const messageBox = document.createElement("div");
   messageBox.classList.add("message-box");
@@ -121,8 +133,8 @@ const displayMessage = (message) => {
   container.appendChild(messageBox);
 };
 
+// check validation of the word
 async function isValidWord(word) {
-  console.log(word);
   try {
     const response = await fetch(
       "https://api.dictionaryapi.dev/api/v2/entries/en/" + word
@@ -137,51 +149,62 @@ async function isValidWord(word) {
   }
 }
 
+// manage the word
 const checkWord = (word) => {
-  console.log("checkWord", word);
   const inputsElements = document.querySelectorAll(".grid .cell");
   for (let i = 0; i < gridCols; i++) {
     let index = gridCols * currentRow + i;
-    console.log(index);
     inputsElements[gridCols * currentRow + i].classList.add("current-row");
   }
-
   currentRow++;
-
-  console.log("correctWord", correctWord);
   checkLetter(word);
 };
 
+// logic of comparing between user guase and the computer choosen
 const checkLetter = (word) => {
   let wordArray = [...word];
   let correctWordArray = [...correctWord];
   const commonLetters = wordArray.filter((value) =>
     correctWordArray.includes(value)
   );
-  console.log(commonLetters);
 
   wordArray.forEach((letter, letterIndex) => {
     correctWordArray.forEach((correctLetter, correctLetterIndex) => {
       if (letter === correctLetter && letterIndex === correctLetterIndex) {
-        console.log("correct letter and position", letter);
         highlightCorrectPosition(letterIndex);
       }
       if (letter === correctLetter) {
-        console.log("correct letter", letter);
         highlightCorrectLetter(letterIndex);
       }
     });
   });
 };
 
+// highlight the correct alphabet in the row
 const highlightCorrectLetter = (letterIndex) => {
   const letterPosition = (currentRow - 1) * gridCols - gridCols + letterIndex;
   const inputsElements = document.querySelectorAll(".grid .cell");
   inputsElements[letterPosition].classList.add("correct-letter");
 };
 
+// highlight the correct alphabet in correct position in the row
 const highlightCorrectPosition = (letterIndex) => {
   const letterPosition = (currentRow - 1) * gridCols - gridCols + letterIndex;
   const inputsElements = document.querySelectorAll(".grid .cell");
   inputsElements[letterPosition].classList.add("correct-position");
 };
+
+// setting for clor blind
+colorBlindBtn.addEventListener("click", () => {
+  if (colorBlindBtn.classList.contains("on")) {
+    colorBlindBtn.classList.remove("on");
+    colorBlindBtn.classList.add("off");
+    colorBlindBtn.textContent = "OFF";
+    container.classList.remove("blind-mode");
+  } else {
+    colorBlindBtn.classList.remove("off");
+    colorBlindBtn.classList.add("on");
+    colorBlindBtn.textContent = "ON";
+    container.classList.add("blind-mode");
+  }
+});
