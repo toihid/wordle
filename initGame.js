@@ -2,15 +2,14 @@ const gridRows = 6;
 const gridCols = 5;
 
 const container = document.querySelector("#container");
-console.log(container);
 
 const controlBar = document.createElement("div");
-controlBar.classList.add("contorl-bar");
+controlBar.classList.add("control-bar");
 
-const label = document.createElement("span");
-label.textContent = "Color blind mode ";
+const colorBlindSwitch = document.createElement("span");
+colorBlindSwitch.textContent = "Color blind mode ";
 
-controlBar.appendChild(label);
+controlBar.appendChild(colorBlindSwitch);
 
 const colorBlindBtn = document.createElement("button");
 colorBlindBtn.id = "btn-toggle-color-blind";
@@ -21,9 +20,11 @@ controlBar.appendChild(colorBlindBtn);
 container.appendChild(controlBar);
 
 const grid = document.createElement("div");
+
 grid.classList.add("grid");
 grid.style.gridTemplateColumns = `repeat(${gridCols},1fr)`;
 grid.style.gridTemplateRows = `repeat(${gridRows},1fr)`;
+
 for (let i = 0; i < gridCols * gridRows; i++) {
   const cell = document.createElement("div");
   cell.classList.add("cell");
@@ -36,3 +37,7 @@ for (let i = 0; i < gridCols * gridRows; i++) {
 }
 
 container.appendChild(grid);
+
+const resultDiv = document.createElement("div");
+resultDiv.classList.add("result");
+container.appendChild(resultDiv);

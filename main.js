@@ -3,9 +3,11 @@ const userInputs = [];
 let currentIndex = 0;
 let currentRow = 1;
 let correctWord = "";
+let isWinner = false;
+let isLoser = false;
 
-// read json form file
-async function readWords() {
+// read json from file
+const readWords = async () => {
   try {
     const response = await fetch("wordle.json");
     if (!response.ok) {
@@ -16,7 +18,7 @@ async function readWords() {
     console.error("There was a problem with the fetch operation:", error);
     return {};
   }
-}
+};
 
 // assign a random word from the wordle.json file
 readWords().then((result) => {
@@ -37,31 +39,38 @@ onScreenKeyboard.forEach((button) => {
   });
 });
 
-// getting user input from keybord
+// Make sure that only backspace, enter and alphabetical letters are allowed
 document.addEventListener("keydown", (e) => {
   if (e.key === "Tab") {
     e.preventDefault(); // Prevent the default tabbing action
   }
   val = e.key.toLowerCase();
   const isAlphabet = /^[a-zA-Z]$/.test(val);
-  (isAlphabet || val == "backspace" || val == "enter") && actionSwitcher(val);
+  if (isAlphabet || val == "backspace" || val == "enter") {
+    actionSwitcher(val);
+  }
 });
 
-// swishBoard to managing Actions
+// switchboard to map the appropiate key to the appropiate action
 const actionSwitcher = (val) => {
-  val === "enter"
-    ? enterAction(val)
-    : val === "backspace"
-    ? deleteAction()
-    : inputAction(val);
+  // TODO: switch statement
+  colorBlindBtn.blur();
+  if (!isWinner) {
+    val === "enter"
+      ? enterAction(val)
+      : val === "backspace"
+      ? deleteAction()
+      : inputAction(val);
+  }
 };
 
-// wtire write a alphabet in the cell and updated the array of userInputs
+// write a alphabet in the cell and updated the array of userInputs
 const writeLetter = (val) => {
   userInputs.push(val);
   const currentIndex = userInputs.length - 1;
   const nextIndex = currentIndex + 1;
   const inputsElements = document.querySelectorAll(".grid .cell");
+  // Make sure that it does not overflow the available cells
   if (nextIndex <= inputsElements.length) {
     inputsElements[currentIndex].textContent = val;
     inputsElements[currentIndex].classList.add("outline");
@@ -83,6 +92,8 @@ const deleteLetter = () => {
 // take actions for new input
 const inputAction = (val) => {
   const rowNum = Math.ceil(userInputs.length / gridCols);
+  // TODO: check if we really need the first condition. Check only second one.userInputs.length % gridCols === 0
+  // TODO: research if guard-clause can be implemented
   if (userInputs.length >= gridCols && userInputs.length % gridCols === 0) {
     if (rowNum < currentRow) {
       writeLetter(val);
@@ -97,6 +108,7 @@ const inputAction = (val) => {
 const deleteAction = (val) => {
   // finding the number of element of last row, user only delete elements on current row not the previous row
   const deleteTill = Math.floor(userInputs.length / gridCols) * gridCols;
+  // First condition makes sure you cant delete on previous row
   if (deleteTill < userInputs.length || deleteTill === currentRow * gridCols) {
     deleteLetter();
   }
@@ -105,6 +117,7 @@ const deleteAction = (val) => {
 // manage actions when clicking enter button
 const enterAction = () => {
   let checkAnyIputINNewRow = currentRow * gridCols - gridCols;
+  // TODO: research if a guard-clause can be implemented
   if (
     userInputs.length % gridCols !== 0 ||
     userInputs.length <= checkAnyIputINNewRow
@@ -116,7 +129,7 @@ const enterAction = () => {
       if (!result) {
         displayMessage("Word is not exist");
       } else {
-        checkWord(word);
+        onValidWord(word);
       }
     });
   }
@@ -150,12 +163,7 @@ async function isValidWord(word) {
 }
 
 // manage the word
-const checkWord = (word) => {
-  const inputsElements = document.querySelectorAll(".grid .cell");
-  for (let i = 0; i < gridCols; i++) {
-    let index = gridCols * currentRow + i;
-    inputsElements[gridCols * currentRow + i].classList.add("current-row");
-  }
+const onValidWord = (word) => {
   currentRow++;
   checkLetter(word);
 };
@@ -164,20 +172,26 @@ const checkWord = (word) => {
 const checkLetter = (word) => {
   let wordArray = [...word];
   let correctWordArray = [...correctWord];
-  const commonLetters = wordArray.filter((value) =>
-    correctWordArray.includes(value)
-  );
 
+  let countCorrectLetters = 0;
   wordArray.forEach((letter, letterIndex) => {
     correctWordArray.forEach((correctLetter, correctLetterIndex) => {
       if (letter === correctLetter && letterIndex === correctLetterIndex) {
         highlightCorrectPosition(letterIndex);
-      }
-      if (letter === correctLetter) {
+        countCorrectLetters++;
+      } else if (letter === correctLetter) {
         highlightCorrectLetter(letterIndex);
       }
     });
   });
+
+  if (countCorrectLetters === gridCols) {
+    winner();
+    isWinner = true;
+  } else if (currentRow == 7) {
+    isLoser = true;
+    loser();
+  }
 };
 
 // highlight the correct alphabet in the row
@@ -208,3 +222,30 @@ colorBlindBtn.addEventListener("click", () => {
     container.classList.add("blind-mode");
   }
 });
+
+const winner = () => {
+  const winnerH = document.createElement("h3");
+  winnerH.classList.add("winnre");
+  winnerH.textContent = "🎉 Congratulations! 🎉 You're a winner!";
+  resultDiv.appendChild(winnerH);
+
+  resetBtn();
+};
+
+const loser = () => {
+  const winnerH = document.createElement("h3");
+  winnerH.classList.add("loser");
+  winnerH.textContent = "🎉 You didn’t win this time, but keep pushing! 💪";
+  resultDiv.appendChild(winnerH);
+  resetBtn();
+};
+
+const resetBtn = () => {
+  const resetBtn = document.createElement("button");
+  resetBtn.classList.add("btn-reseet");
+  resetBtn.textContent = "Reset Game";
+  resetBtn.addEventListener("click", () => {
+    location.reload();
+  });
+  resultDiv.appendChild(resetBtn);
+};

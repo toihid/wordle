@@ -10,7 +10,7 @@
 .cell {
   background-color: #fbfcff;
   border: 1px solid #dee1e9;
-  margin: 5px;
+  margin: 2px;
   width: 56px;
   height: 56px;
   cursor: pointer;
@@ -99,6 +99,21 @@
 #btn-toggle-color-blind.off {
   background-color: red;
 }
-.contorl-bar {
+.control-bar {
   margin: 10px 0;
+}
+.winnre {
+  color: green;
+}
+.loser {
+  color: red;
+}
+
+.btn-reseet {
+  padding: 10px 10px;
+  margin-bottom: 10px;
+  background: #4caf50;
+  color: #fff;
+  border: none;
+  cursor: pointer;
 }
