@@ -8,3 +8,14 @@
     text-align: center;
   }
 }
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .cell,
+  #keyboard button {
+    width: 35px;
+    height: 35px;
+  }
+  #keyboard .row {
+    text-align: center;
+  }
+}
