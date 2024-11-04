@@ -3,6 +3,7 @@
   #keyboard button {
     width: 35px;
     height: 35px;
+    font-size: 1em;
   }
   #keyboard .row {
     text-align: center;
@@ -14,6 +15,7 @@
   #keyboard button {
     width: 35px;
     height: 35px;
+    font-size: 1em;
   }
   #keyboard .row {
     text-align: center;
