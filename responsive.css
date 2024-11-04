@@ -4,6 +4,7 @@
     width: 35px;
     height: 35px;
     font-size: 1em;
+    margin: 2px;
   }
   #keyboard .row {
     text-align: center;
