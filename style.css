@@ -1,5 +1,6 @@
 #container {
   text-align: center;
+  padding: 10px;
 }
 .grid {
   display: grid;
@@ -69,7 +70,7 @@
 }
 
 .correct-position {
-  background-color: #79b851 !important;
+  background-color: blue !important;
   color: #fff;
 }
 .blind-mode .correct-position {
@@ -84,7 +85,8 @@
   width: auto !important;
 }
 
-#btn-toggle-color-blind {
+#btn-toggle-color-blind,
+#btn-toggle-dark-mode {
   padding: 10px 20px;
   cursor: pointer;
   border: none;
@@ -92,15 +94,22 @@
   color: white;
   background-color: gray;
   transition: background-color 0.3s;
+  color: #000;
 }
 #btn-toggle-color-blind.on {
   background-color: green;
 }
 #btn-toggle-color-blind.off {
-  background-color: red;
+  background-color: #dbe0ed;
 }
 .control-bar {
-  margin: 10px 0;
+  display: flex;
+  justify-content: space-around;
+  max-width: 500px;
+  margin: 10px auto;
+}
+.control-bar div {
+  flex: 1;
 }
 .winnre {
   color: green;
@@ -116,4 +125,15 @@
   color: #fff;
   border: none;
   cursor: pointer;
+}
+
+#container.dark-mode {
+  background: #000;
+}
+#container.dark-mode .control-bar span {
+  color: #fff;
+}
+
+#btn-toggle-dark-mode.off {
+  background-color: #dbe0ed;
 }

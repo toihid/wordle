@@ -53,14 +53,20 @@ document.addEventListener("keydown", (e) => {
 
 // switchboard to map the appropiate key to the appropiate action
 const actionSwitcher = (val) => {
-  // TODO: switch statement
+  // Done, TODO: switch statement , Done
   colorBlindBtn.blur();
   if (!isWinner) {
-    val === "enter"
-      ? enterAction(val)
-      : val === "backspace"
-      ? deleteAction()
-      : inputAction(val);
+    switch (val) {
+      case "enter":
+        enterAction(val);
+        break;
+      case "backspace":
+        deleteAction();
+        break;
+      default:
+        inputAction(val);
+        break;
+    }
   }
 };
 
@@ -92,9 +98,12 @@ const deleteLetter = () => {
 // take actions for new input
 const inputAction = (val) => {
   const rowNum = Math.ceil(userInputs.length / gridCols);
-  // TODO: check if we really need the first condition. Check only second one.userInputs.length % gridCols === 0
+  //Done, TODO: check if we really need the first condition. Check only second one.userInputs.length % gridCols === 0
   // TODO: research if guard-clause can be implemented
-  if (userInputs.length >= gridCols && userInputs.length % gridCols === 0) {
+  // the first condition is not needed
+  //if (userInputs.length >= gridCols && userInputs.length % gridCols === 0) {
+
+  if (userInputs.length % gridCols === 0) {
     if (rowNum < currentRow) {
       writeLetter(val);
     } else {
@@ -117,22 +126,22 @@ const deleteAction = (val) => {
 // manage actions when clicking enter button
 const enterAction = () => {
   let checkAnyIputINNewRow = currentRow * gridCols - gridCols;
-  // TODO: research if a guard-clause can be implemented
+  // Done, TODO: research if a guard-clause can be implemented
   if (
     userInputs.length % gridCols !== 0 ||
     userInputs.length <= checkAnyIputINNewRow
   ) {
     displayMessage("Too short!");
-  } else {
-    const word = userInputs.slice(-5).join("");
-    isValidWord(word).then((result) => {
-      if (!result) {
-        displayMessage("Word is not exist");
-      } else {
-        onValidWord(word);
-      }
-    });
+    return;
   }
+  const word = userInputs.slice(-5).join("");
+  isValidWord(word).then((result) => {
+    if (!result) {
+      displayMessage("Word is not exist");
+    } else {
+      onValidWord(word);
+    }
+  });
 };
 
 // display a message
@@ -185,10 +194,11 @@ const checkLetter = (word) => {
     });
   });
 
+  // Determine if the board is in a winning or losing state.
   if (countCorrectLetters === gridCols) {
     winner();
     isWinner = true;
-  } else if (currentRow == 7) {
+  } else if (currentRow == gridRows + 1) {
     isLoser = true;
     loser();
   }
@@ -220,6 +230,21 @@ colorBlindBtn.addEventListener("click", () => {
     colorBlindBtn.classList.add("on");
     colorBlindBtn.textContent = "ON";
     container.classList.add("blind-mode");
+  }
+});
+
+// setting for clor blind
+darkModeBtn.addEventListener("click", () => {
+  if (darkModeBtn.classList.contains("on")) {
+    darkModeBtn.classList.remove("on");
+    darkModeBtn.classList.add("off");
+    darkModeBtn.textContent = "OFF";
+    container.classList.remove("dark-mode");
+  } else {
+    darkModeBtn.classList.remove("off");
+    darkModeBtn.classList.add("on");
+    darkModeBtn.textContent = "ON";
+    container.classList.add("dark-mode");
   }
 });
 
